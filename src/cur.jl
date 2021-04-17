@@ -113,8 +113,7 @@ function get(cur::Cursor, key, ::Type{T}, op::CursorOps=SET_KEY) where T
                    cur.handle, mdb_key_ref, mdb_val_ref, Cint(op))
     (ret != 0) && throw(LMDBError(ret))
 
-    # Convert to proper type
-    return convert(T, mdb_val_ref)
+    return convert(T, mdb_val_ref), convert(Vector{UInt8},mdb_key_ref)
 end
 
 """Store by cursor.
